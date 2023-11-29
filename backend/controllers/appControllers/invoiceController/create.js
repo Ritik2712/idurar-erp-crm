@@ -37,7 +37,7 @@ const create = async (req, res) => {
       //item total
       item['total'] = total;
     });
-    taxTotal = calculate.multiply(subTotal, taxRate);
+    taxTotal = calculate.multiply(subTotal, taxRate) / 100;
     total = calculate.add(subTotal, taxTotal);
 
     body['subTotal'] = subTotal;
@@ -59,13 +59,13 @@ const create = async (req, res) => {
         new: true,
       }
     ).exec();
-    // Returning successfull response
+    // Returning successful response
 
     increaseBySettingKey({ settingKey: 'last_invoice_number' });
 
     custom.generatePdf('Invoice', { filename: 'invoice', format: 'A4' }, result);
 
-    // Returning successfull response
+    // Returning successful response
     return res.status(200).json({
       success: true,
       result: updateResult,
